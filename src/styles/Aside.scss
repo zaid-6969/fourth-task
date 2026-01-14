@@ -1,0 +1,34 @@
+@mixin common(){
+  padding: 0px;
+  margin: 0px;
+}
+.aside-container {
+  width: 16.6%;
+  height: 94vh;
+  border-right: 1px solid #a9abaf63;
+  display: flex;
+  justify-content: center;
+  // position: fixed;
+  ul {
+    @include common();
+    width: 80%;
+    list-style: none;
+    display: flex;
+    padding-inline-start: 0px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    margin-top: 15px;
+    gap: 15px;
+    li {
+      margin: 0px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      margin-block-start: 0px;
+      margin-block-end: 0px;
+      gap: 5px;
+      align-items: center;
+    }
+  }
+}
