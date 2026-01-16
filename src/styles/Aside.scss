@@ -1,9 +1,9 @@
-@mixin common(){
+@mixin common() {
   padding: 0px;
   margin: 0px;
 }
 .aside-container {
-  width: 16.6%;
+  width: 17.6%;
   height: 94vh;
   border-right: 1px solid #a9abaf63;
   display: flex;
@@ -19,7 +19,6 @@
     align-items: center;
     justify-content: start;
     margin-top: 15px;
-    gap: 15px;
     li {
       margin: 0px;
       width: 100%;
@@ -27,8 +26,40 @@
       flex-direction: row;
       margin-block-start: 0px;
       margin-block-end: 0px;
-      gap: 5px;
       align-items: center;
     }
+  }
+}
+
+.aside-container {
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    &:hover {
+      background-color: #2a2a2d;
+    }
+  }
+
+  .aside-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #a9abaf;
+    text-decoration: none;
+    padding: 5px;
+    &:hover {
+      border-radius: 3px;
+      background-color: #2a2a2d;
+    }
+  }
+
+  .aside-link.active {
+    background-color: #1c2b42;
+    color: #669df1;
+    border-radius: 3px;
   }
 }

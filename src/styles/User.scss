@@ -9,11 +9,11 @@
 }
 .landing {
   width: 90%;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: start;
-  gap: 3%;
+  gap: 15px;
   padding: 15px;
 }
 .tabination-topic {
@@ -22,7 +22,7 @@
 }
 .tabination {
   width: 100%;
-  height: 69vh;
+  height: auto;
   display: flex;
   flex-direction: column;
 }
@@ -87,23 +87,6 @@
   align-items: center;
   gap: 15px;
 }
-
-// .card{
-//   width: 300px;
-//   height: 200px;
-//   background-color: #242528;
-//   border-radius: 5px;
-//     box-shadow:
-//     0 8px 24px rgba(0, 0, 0, 0.35),
-//     0 2px 6px rgba(0, 0, 0, 0.15);
-// }
-
-// .card:hover{
-//     box-shadow:
-//     0 8px 24px rgba(0, 0, 0, 0.55),
-//     0 2px 6px rgba(0, 0, 0, 0.35);
-//     scale: 1.01;
-// }
 
 .support-card {
   display: flex;
@@ -178,8 +161,8 @@
 .row {
   display: flex;
   justify-content: space-between;
-  padding: 6px 0;
   font-size: 14px;
+  padding: 2px;
 }
 
 .count {
@@ -189,17 +172,60 @@
   font-size: 12px;
 }
 
-/* Footer */
-.footer {
+.topic-spaces{
+  width: 100%;
   display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-  font-size: 13px;
-  color: #669df1;
-  cursor: pointer;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 20px;
+  color: #e6e6e6;
+  div{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    span{
+      border: 1px solid #a1a1aa;
+      border-radius: 4px;
+      padding: 5px;
+      display: flex;
+    }
+  }
+  h3{
+    margin: 0px;
+  }
+ img {
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+}
 }
 
-.footer:hover {
-  text-decoration: underline;
+.tabination-kanba{
+  width: 100%;
+  ul{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+}
+
+.creation-module{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* 👈 opacity effect */
+  z-index: 10;
+}
+.create-task {
+  width: 50%;
+  position: fixed;
+  top: 25%;
+  right: 25%;
+  z-index: 20;
+  background-color: #242528;
+  padding: 50px;
+  border-radius: 8px;
 }

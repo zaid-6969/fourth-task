@@ -7,6 +7,7 @@ import "./styles/app.scss";
 import { useDispatch, useSelector } from "react-redux";
 // import { decrement, increment, incrementByAmount } from "./store/counterSlice";
 import MainLayout from "./layout/MainLayout";
+import Spaces from "./pages/Spaces";
 
 const App = () => {
   // const selectore = useSelector((state) => state.counter.value);
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/" element={<LoginPage />} />
           <Route path="/homeuser" element={<UsersPage />} />
           <Route path="/homeadmin" element={<AdminPage />} />
+          <Route path="/spaces" element={<Spaces />} />
         </Route>
       </Routes>
     </>

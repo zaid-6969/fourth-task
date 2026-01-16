@@ -190,6 +190,14 @@ button {
   padding-top: 45px;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 0px;
 }
+
+.togglebtn {
+  background-color: #1f1f21;
+  color: #a9abaf;
+  outline: none;
+  border: 0;
+}
+

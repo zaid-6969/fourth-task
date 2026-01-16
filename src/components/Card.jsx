@@ -52,7 +52,7 @@ const SupportCard = () => {
             <span>Assigned to me</span>
             <span className="count">0</span>
           </div>
-
+         <div className="hr"></div>
           <div className="footer">
             <span>3 queues</span>
             <span className="arrow">⌄</span>
@@ -88,7 +88,7 @@ const SupportCard = () => {
             <span>Assigned to me</span>
             <span className="count">0</span>
           </div>
-
+          <div className="hr"></div>
           <div className="footer">
             <span>3 queues</span>
             <span className="arrow">⌄</span>
