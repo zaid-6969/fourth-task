@@ -3,7 +3,7 @@
   margin: 0px;
 }
 .aside-container {
-  width: 17.6%;
+  width: 19.8%;
   height: 94vh;
   border-right: 1px solid #a9abaf63;
   display: flex;
@@ -42,7 +42,6 @@
       background-color: #2a2a2d;
     }
   }
-
   .aside-link {
     width: 100%;
     display: flex;
@@ -50,9 +49,11 @@
     gap: 5px;
     color: #a9abaf;
     text-decoration: none;
-    padding: 5px;
+    padding: 8px 12px 8px 20px; // 👈 space for left indicator
+    position: relative; // 👈 required
+    border-radius: 3px;
+
     &:hover {
-      border-radius: 3px;
       background-color: #2a2a2d;
     }
   }
@@ -60,6 +61,18 @@
   .aside-link.active {
     background-color: #1c2b42;
     color: #669df1;
-    border-radius: 3px;
+  }
+
+  /* 🔥 LEFT INDICATOR (LIKE YOUR IMAGE) */
+  .aside-link.active::before {
+    content: "";
+    position: absolute;
+    left: -0px; // 👈 distance from left
+    top: 50%;
+    transform: translateY(-50%);
+    height: 15px; // 👈 short height (key part)
+    width: 3px;
+    background-color: #669df1;
+    border-radius: 999px; 
   }
 }

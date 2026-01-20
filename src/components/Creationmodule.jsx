@@ -2,45 +2,53 @@ import React from "react";
 import { ImCross } from "react-icons/im";
 import { toggleModule } from "../store/module";
 import { useDispatch } from "react-redux";
-
+import '../styles/module.scss'
 
 const Creationmodule = () => {
   const dispatch = useDispatch();
 
   return (
     <div className="create-task">
-      <button className="togglebtn" onClick={() => dispatch(toggleModule())}>
-        {" "}
-        <span>
-          <ImCross />{" "}
-        </span>
+      <button
+        className="close-btn"
+        onClick={() => dispatch(toggleModule())}
+      >
+        <ImCross />
       </button>
+
       <h1>Create Task</h1>
-      <p>Required fields are marked with an asterisk *</p>
-      <div>
-        <p>Spaces *</p>
+      <p className="subtitle">
+        Required fields are marked with an asterisk *
+      </p>
+
+      <div className="form-group">
+        <label>Spaces *</label>
         <input type="text" />
       </div>
-      <div>
-        <p>Spaces *</p>
+
+      <div className="form-group">
+        <label>Spaces *</label>
         <input type="text" />
       </div>
 
-      <p>Learn about work types﻿</p>
+      <p className="learn">Learn about work types</p>
 
-      <div className="hr"></div>
+      <div className="divider"></div>
 
-      <div>
-        <p>Status</p>
-        <select name="status" id="">
-          <option value="">To Do</option>
-          <option value="">In Progress</option>
-          <option value="">Done</option>
+      <div className="form-group">
+        <label>Status</label>
+        <select>
+          <option>To Do</option>
+          <option>In Progress</option>
+          <option>Done</option>
         </select>
-        <p>This is the initial status upon creation</p>
+        <span className="hint">
+          This is the initial status upon creation
+        </span>
       </div>
-      <div>
-        <p>Summary*</p>
+
+      <div className="form-group">
+        <label>Summary *</label>
         <input type="text" />
       </div>
     </div>

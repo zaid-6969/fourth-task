@@ -1,0 +1,292 @@
+.kanban-board {
+  display: flex;
+  gap: 15px;
+  width: 100vw;
+  min-height: 70vh;
+}
+
+/* COLUMN */
+.column {
+  width: 25%;
+  background: #18191a;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  max-height: 75vh;
+  gap: 10px;
+}
+
+/* COLUMN HEADER */
+.column h3 {
+  margin: 0;
+  padding: 12px;
+  font-size: 16px;
+  color: #e6e6e6;
+  border-bottom: 1px solid #2f3033;
+}
+
+.card {
+  background: #242528;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: grab;
+  height: 140px;
+}
+
+.card:active {
+  cursor: grabbing;
+}
+
+/* SCROLLBAR (DARK UI) */
+.column-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.column-items::-webkit-scrollbar-thumb {
+  background: #3a3b3c;
+  border-radius: 10px;
+}
+
+.column-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.column-scroll {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 88%;
+  height: auto;
+}
+
+
+.kanban-card {
+  background: #242528;
+  color: #e5e7eb;
+
+  padding: 12px 14px;
+  margin-bottom: 10px;
+
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+
+  cursor: grab;
+  user-select: none;
+
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+
+  &:hover {
+    background: #2c2d31;
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.55),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  &:active {
+    cursor: grabbing;
+    transform: scale(0.98);
+  }
+}
+
+
+.add-card-btn {
+  width: 100%;
+  margin-top: 6px;
+
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 13px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+}
+
+
+.add-card-wrapper {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.column:hover .add-card-wrapper {
+  opacity: 1;
+}
+
+.add-column {
+  min-width: 260px;
+}
+
+.add-column-btn {
+  width: 100%;
+  height: 42px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 10px;
+
+  color: #9ca3af;
+  font-size: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+}
+
+.add-column-form {
+  background: #1c1d20;
+  padding: 10px;
+  border-radius: 12px;
+
+  input {
+    width: 100%;
+    padding: 8px 10px;
+
+    background: #242528;
+    border: 1px solid #2f3035;
+    border-radius: 8px;
+
+    color: #ffffff;
+    outline: none;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+
+    button {
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:first-child {
+      background: #6366f1;
+      color: #ffffff;
+    }
+
+    button:last-child {
+      background: transparent;
+      color: #9ca3af;
+    }
+  }
+}
+
+
+
+
+.column-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delete-column {
+  background: transparent;
+  border: none;
+
+  color: #9ca3af;
+  font-size: 14px;
+
+  cursor: pointer;
+  opacity: 0;
+
+  padding: 4px;
+  border-radius: 6px;
+
+  transition: 
+    opacity 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+}
+
+/* show delete only on hover (Jira behavior) */
+.column:hover .delete-column {
+  opacity: 1;
+}
+
+
+
+
+.kanban-card {
+  position: relative;
+}
+
+.delete-card {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+
+  background: transparent;
+  border: none;
+
+  color: #9ca3af;
+  font-size: 12px;
+
+  cursor: pointer;
+  opacity: 0;
+
+  padding: 4px;
+  border-radius: 6px;
+
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+}
+
+/* show only when hovering card */
+.kanban-card:hover .delete-card {
+  opacity: 1;
+}
+
+
+
+.delete-card:hover,
+.delete-column:hover {
+  transform: scale(1.05);
+}

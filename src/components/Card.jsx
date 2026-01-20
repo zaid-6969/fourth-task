@@ -80,7 +80,8 @@ const SupportCard = () => {
           <p className="section-title">Recent queues</p>
 
           <div className="row">
-            <span>All open</span>
+      
+       <span>All open</span>
             <span className="count">0</span>
           </div>
 
@@ -101,4 +102,3 @@ const SupportCard = () => {
 };
 
 export default SupportCard;
- 

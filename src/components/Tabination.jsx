@@ -10,21 +10,25 @@ const Tabination = ({ tabs = [] }) => {
     (tab) => tab.id === activeTab
   )?.content;
 
+  
+
   return (
     <>
       <div className="tabs">
         {tabs.map((tab) => (
+          <div  className={`tab ${activeTab === tab.id ? "active" : ""}`}  key={tab.id}>
+            <span>{tab.icon}</span>
           <button
-            key={tab.id}
-            className={`tab ${activeTab === tab.id ? "active" : ""}`}
+            className={`tab `}
             onClick={() => setActiveTab(tab.id)}
           >
             {tab.label}
           </button>
+          </div>
         ))}
       </div>
 
-      <div className="hr"></div>
+      <div  className="hr"></div>
 
       <div className="tab-content">
         {activeContent}

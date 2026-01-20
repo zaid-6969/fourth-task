@@ -10,11 +10,36 @@ import image from "../assets/image/jira.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleBox } from "../store/uiSlice";
 import { toggleModule } from "../store/module";
+import Logout from "../auth/Logout";
+import { auth } from "../firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth/web-extension";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const showBox = useSelector((state) => state.ui.showBox);
 
+const loginUser = async (email, password) => {
+  try {
+    const { user } = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    return {
+      user,
+      role: user.email === "admin@gmail.com" ? "admin" : "user",
+    };
+  } catch (error) {
+    console.error("Login error:", error.message);
+    throw error;
+  }
+};
+
+
+  const handleLogout = async () => {
+    await Logout(); // ✅ runs ONLY on click
+  };
   return (
     <>
       <div className="navbar-container">
@@ -22,7 +47,7 @@ const Navbar = () => {
           <button className="togglebtn" onClick={() => dispatch(toggleBox())}>
             <li>
               <span>
-                {showBox ?  <GoSidebarExpand /> : <GoSidebarCollapse /> }
+                {showBox ? <GoSidebarExpand /> : <GoSidebarCollapse />}
               </span>
             </li>
           </button>
@@ -38,13 +63,17 @@ const Navbar = () => {
         </ul>
         <div>
           <input placeholder="🔍  Search" type="text" />
-          <button className="togglebtn" onClick={() => dispatch(toggleModule())}>
-            {" "}
-            <span>
-              <FiPlus />
-            </span>{" "}
-            Create
-          </button>
+          {(
+            <button
+              className="togglebtn"
+              onClick={() => dispatch(toggleModule())}
+            >
+              <span>
+                <FiPlus />
+              </span>
+              Create
+            </button>
+          )}
         </div>
         <ul>
           <li>
@@ -53,7 +82,7 @@ const Navbar = () => {
           <li>
             <IoMdHelpCircleOutline />
           </li>
-          <li>
+          <li onClick={handleLogout}>
             <LuSettings />
           </li>
         </ul>
