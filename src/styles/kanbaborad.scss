@@ -61,7 +61,6 @@
   height: auto;
 }
 
-
 .kanban-card {
   background: #242528;
   color: #e5e7eb;
@@ -100,7 +99,6 @@
   }
 }
 
-
 .add-card-btn {
   width: 100%;
   margin-top: 6px;
@@ -124,7 +122,6 @@
     color: #ffffff;
   }
 }
-
 
 .add-card-wrapper {
   opacity: 0;
@@ -205,9 +202,6 @@
   }
 }
 
-
-
-
 .column-header {
   position: relative;
   display: flex;
@@ -228,7 +222,7 @@
   padding: 4px;
   border-radius: 6px;
 
-  transition: 
+  transition:
     opacity 0.15s ease,
     background 0.15s ease,
     color 0.15s ease;
@@ -244,49 +238,79 @@
   opacity: 1;
 }
 
-
-
-
+/* =========================
+   KANBAN CARD
+========================= */
 .kanban-card {
   position: relative;
+  padding-right: 24px; // space for X button
 }
 
-.delete-card {
+/* =========================
+   DELETE BUTTON (CARD + COLUMN)
+========================= */
+.delete-card{
   position: absolute;
   top: 6px;
   right: 6px;
 
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background: transparent;
   border: none;
 
-  color: #9ca3af;
+  color: #9ca3af; // neutral gray
   font-size: 12px;
+  font-weight: 600;
 
   cursor: pointer;
-  opacity: 0;
 
-  padding: 4px;
+  opacity: 0;
+  transform: scale(0.9);
+
   border-radius: 6px;
 
   transition:
     opacity 0.15s ease,
-    background 0.15s ease,
-    color 0.15s ease;
-
-  &:hover {
-    background: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-  }
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
 }
 
-/* show only when hovering card */
-.kanban-card:hover .delete-card {
+/* =========================
+   SHOW ON HOVER
+========================= */
+.kanban-card:hover .delete-card,
+.column-header:hover .delete-column {
   opacity: 1;
+  transform: scale(1);
 }
 
-
-
+/* =========================
+   HOVER EFFECT
+========================= */
 .delete-card:hover,
 .delete-column:hover {
-  transform: scale(1.05);
+  background: rgba(239, 68, 68, 0.15); // soft red
+  color: #ef4444;
+}
+
+/* =========================
+   ACTIVE / CLICK FEEDBACK
+========================= */
+.delete-card:active,
+.delete-column:active {
+  transform: scale(0.95);
+}
+
+.col-title-con{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

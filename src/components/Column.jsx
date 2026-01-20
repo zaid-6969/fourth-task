@@ -8,9 +8,10 @@ const Column = ({
   moveCard,
   moveColumn,
   addCard,
-  renameColumn,
   renameCard,
+  renameColumn,
   deleteColumn,
+  deleteCard,
 }) => {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(column.title);
@@ -19,25 +20,13 @@ const Column = ({
 
   const handleDrop = (e) => {
     e.preventDefault();
-
-    const cardRaw = e.dataTransfer.getData("application/card");
-    if (cardRaw) {
-      const { card, sourceCol, fromIndex } = JSON.parse(cardRaw);
-      moveCard(sourceCol, column.id, card, fromIndex, column.items.length);
-      return;
-    }
-
-    const columnRaw = e.dataTransfer.getData("application/column");
-    if (columnRaw) {
-      const { index: from } = JSON.parse(columnRaw);
-      moveColumn(from, index);
-    }
+    const raw = e.dataTransfer.getData("application/column");
+    if (!raw) return;
+    moveColumn(JSON.parse(raw).index, index);
   };
 
   const handleCardDrop = (e, toIndex) => {
     e.preventDefault();
-    e.stopPropagation(); // 🔥 THIS LINE FIXES DUPLICATION
-
     const raw = e.dataTransfer.getData("application/card");
     if (!raw) return;
 
@@ -52,7 +41,7 @@ const Column = ({
       onDrop={handleDrop}
     >
       <h3
-        className="column-header"
+      className="col-title-con"
         draggable
         onDoubleClick={() => setEditing(true)}
         onDragStart={(e) =>
@@ -85,33 +74,24 @@ const Column = ({
 
       <div className="column-scroll">
         {column.items.map((item, i) => (
-          <div
-            key={item.id}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => handleCardDrop(e, i)}
-          >
+          <div key={item.id} onDrop={(e) => handleCardDrop(e, i)}>
             <KanbanCard
               item={item}
-              sourceCol={column.id}
               index={i}
-              renameCard={renameCard} // ✅ PASS DOWN
+              sourceCol={column.id}
+              renameCard={renameCard}
+              deleteCard={deleteCard}
             />
           </div>
         ))}
 
-        {/* DROP AT END */}
-        <div
-          className="drop-end"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => handleCardDrop(e, column.items.length)}
-        />
+        <div onDrop={(e) => handleCardDrop(e, column.items.length)} />
 
         {showInput ? (
           <div className="add-card">
             <textarea value={text} onChange={(e) => setText(e.target.value)} />
             <button
               onClick={() => {
-                if (!text.trim()) return;
                 addCard(column.id, text);
                 setText("");
                 setShowInput(false);
@@ -121,7 +101,7 @@ const Column = ({
             </button>
           </div>
         ) : (
-          <button className="add-card-btn" onClick={() => setShowInput(true)}>
+          <button onClick={() => setShowInput(true)}>
             <FiPlus /> Add card
           </button>
         )}

@@ -1,117 +1,126 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Column from "./Column";
 import "../styles/kanbaborad.scss";
 import { FiPlus } from "react-icons/fi";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setColumns } from "../store/kanbanSlice";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+
+
 const KanbanBoard = () => {
-  const [columns, setColumns] = useState([
-    {
-      id: "todo",
-      title: "To Do",
-      items: [
-        { id: "1", content: "Design UI" },
-        { id: "2", content: "Create components" },
-      ],
-    },
-    {
-      id: "progress",
-      title: "In Progress",
-      items: [{ id: "3", content: "Build Kanban logic" }],
-    },
-    {
-      id: "done",
-      title: "Done",
-      items: [{ id: "4", content: "Project setup" }],
-    },
-  ]);
+  const dispatch = useDispatch();
+  const columns = useSelector((state) => state.kanban.columns);
 
   const [showColumnInput, setShowColumnInput] = useState(false);
   const [columnTitle, setColumnTitle] = useState("");
 
+  /* 🔥 FIREBASE REALTIME LOAD */
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "boards", "main"), (snap) => {
+      if (snap.exists()) {
+        dispatch(setColumns(snap.data().columns));
+      }
+    });
+
+    return () => unsub();
+  }, [dispatch]);
+
+  /* 🔥 FIREBASE SAVE ON CHANGE */
+  useEffect(() => {
+    if (!columns.length) return;
+    setDoc(doc(db, "boards", "main"), { columns });
+  }, [columns]);
+
   /* ➕ ADD CARD */
   const addCard = (columnId, content) => {
-    if (!content.trim()) return;
+    dispatch(
+      setColumns(
+        columns.map((c) =>
+          c.id === columnId
+            ? {
+                ...c,
+                items: [...c.items, { id: Date.now().toString(), content }],
+              }
+            : c
+        )
+      )
+    );
+  };
 
-    setColumns((prev) =>
-      prev.map((col) =>
-        col.id === columnId
-          ? {
-              ...col,
-              items: [...col.items, { id: Date.now().toString(), content }],
-            }
-          : col,
-      ),
+  /* ✏️ RENAME CARD */
+  const renameCard = (columnId, cardId, text) => {
+    dispatch(
+      setColumns(
+        columns.map((c) =>
+          c.id === columnId
+            ? {
+                ...c,
+                items: c.items.map((i) =>
+                  i.id === cardId ? { ...i, content: text } : i
+                ),
+              }
+            : c
+        )
+      )
     );
   };
 
   /* ✏️ RENAME COLUMN */
-  const renameColumn = (columnId, newTitle) => {
-    setColumns((prev) =>
-      prev.map((c) => (c.id === columnId ? { ...c, title: newTitle } : c)),
-    );
-  };
-
-  const renameCard = (columnId, cardId, newContent) => {
-    setColumns((prev) =>
-      prev.map((col) =>
-        col.id === columnId
-          ? {
-              ...col,
-              items: col.items.map((card) =>
-                card.id === cardId ? { ...card, content: newContent } : card,
-              ),
-            }
-          : col,
-      ),
+  const renameColumn = (columnId, title) => {
+    dispatch(
+      setColumns(
+        columns.map((c) =>
+          c.id === columnId ? { ...c, title } : c
+        )
+      )
     );
   };
 
   /* 🗑 DELETE COLUMN */
   const deleteColumn = (columnId) => {
-    setColumns((prev) => prev.filter((c) => c.id !== columnId));
-  };
-
-  /* 🟦 MOVE / REORDER CARD */
-  const moveCard = (fromCol, toCol, card, fromIndex, toIndex) => {
-    setColumns((prev) => {
-      const updated = structuredClone(prev);
-
-      const source = updated.find((c) => c.id === fromCol);
-      const target = updated.find((c) => c.id === toCol);
-
-      source.items.splice(fromIndex, 1);
-      target.items.splice(toIndex, 0, card);
-
-      return updated;
-    });
-  };
-
-  /* 🟨 MOVE COLUMN */
-  const moveColumn = (fromIndex, toIndex) => {
-    setColumns((prev) => {
-      const updated = [...prev];
-      const [moved] = updated.splice(fromIndex, 1);
-      updated.splice(toIndex, 0, moved);
-      return updated;
-    });
+    dispatch(setColumns(columns.filter((c) => c.id !== columnId)));
   };
 
   /* 🗑 DELETE CARD */
   useEffect(() => {
     const handler = (e) => {
-      const { cardId, colId } = e.detail;
-      setColumns((prev) =>
-        prev.map((c) =>
-          c.id === colId
-            ? { ...c, items: c.items.filter((i) => i.id !== cardId) }
-            : c,
-        ),
+      const { colId, cardId } = e.detail;
+      dispatch(
+        setColumns(
+          columns.map((c) =>
+            c.id === colId
+              ? { ...c, items: c.items.filter((i) => i.id !== cardId) }
+              : c
+          )
+        )
       );
     };
 
     document.addEventListener("delete-card", handler);
     return () => document.removeEventListener("delete-card", handler);
-  }, []);
+  }, [columns, dispatch]);
+
+  /* 🟦 MOVE / REORDER CARD */
+  const moveCard = (fromCol, toCol, card, fromIndex, toIndex) => {
+    const updated = structuredClone(columns);
+    const source = updated.find((c) => c.id === fromCol);
+    const target = updated.find((c) => c.id === toCol);
+
+    source.items.splice(fromIndex, 1);
+    target.items.splice(toIndex, 0, card);
+
+    dispatch(setColumns(updated));
+  };
+
+  /* 🟨 MOVE COLUMN */
+  const moveColumn = (from, to) => {
+    const updated = [...columns];
+    const [moved] = updated.splice(from, 1);
+    updated.splice(to, 0, moved);
+    dispatch(setColumns(updated));
+  };
 
   return (
     <div className="kanban-board">
@@ -123,8 +132,8 @@ const KanbanBoard = () => {
           moveCard={moveCard}
           moveColumn={moveColumn}
           addCard={addCard}
+          renameCard={renameCard}
           renameColumn={renameColumn}
-          renameCard={renameCard} 
           deleteColumn={deleteColumn}
         />
       ))}
@@ -136,35 +145,29 @@ const KanbanBoard = () => {
             <input
               value={columnTitle}
               onChange={(e) => setColumnTitle(e.target.value)}
-              placeholder="Enter column title"
               autoFocus
             />
-            <div className="actions">
-              <button
-                onClick={() => {
-                  if (!columnTitle.trim()) return;
-                  setColumns((p) => [
-                    ...p,
+            <button
+              onClick={() => {
+                dispatch(
+                  setColumns([
+                    ...columns,
                     {
                       id: Date.now().toString(),
                       title: columnTitle,
                       items: [],
                     },
-                  ]);
-                  setColumnTitle("");
-                  setShowColumnInput(false);
-                }}
-              >
-                Add column
-              </button>
-              <button onClick={() => setShowColumnInput(false)}>Cancel</button>
-            </div>
+                  ])
+                );
+                setColumnTitle("");
+                setShowColumnInput(false);
+              }}
+            >
+              Add column
+            </button>
           </div>
         ) : (
-          <button
-            className="add-column-btn"
-            onClick={() => setShowColumnInput(true)}
-          >
+          <button onClick={() => setShowColumnInput(true)}>
             <FiPlus /> Add column
           </button>
         )}
